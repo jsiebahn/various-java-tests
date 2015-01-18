@@ -39,27 +39,27 @@ import java.util.List;
  *     @Bean(destroyMethod="shutdown")
  *     public net.sf.ehcache.CacheManager ehCacheManager() {
  *
- *     return new net.sf.ehcache.CacheManager(
- *             // create default cache
- *             EhCacheConfigurationBuilder.createDefaultCache()
- *             // configure the default cache
- *             .withEternal(false)
- *             .withTimeToIdleSeconds(120)
- *             .withTimeToLiveSeconds(120)
- *             .withDiskExpiryThreadIntervalSeconds(120)
- *             .withMemoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LRU)
- *             .withMaxElementsInMemory(100)
- *             .withMaxElementsOnDisk(10000)
+ *         return new net.sf.ehcache.CacheManager(
+ *                 // create default cache
+ *                 EhCacheConfigurationBuilder.createDefaultCache()
+ *                 // configure the default cache
+ *                 .withEternal(false)
+ *                 .withTimeToIdleSeconds(120)
+ *                 .withTimeToLiveSeconds(120)
+ *                 .withDiskExpiryThreadIntervalSeconds(120)
+ *                 .withMemoryStoreEvictionPolicy(MemoryStoreEvictionPolicy.LRU)
+ *                 .withMaxElementsInMemory(100)
+ *                 .withMaxElementsOnDisk(10000)
  *
- *             // create specific caches based on default cache configuration
- *             .createCacheFromDefault().withName("aSpecificCache")
+ *                 // create specific caches based on default cache configuration
+ *                 .createCacheFromDefault().withName("aSpecificCache")
  *
- *             // set global configuration properties
- *             .withDiskStorePath(System.getProperty("java.io.tmpdir"))
+ *                 // set global configuration properties
+ *                 .withDiskStorePath(System.getProperty("java.io.tmpdir"))
  *
- *             // create the complete cache configuration with all caches
- *             .build()
- *         );
+ *                 // create the complete cache configuration with all caches
+ *                 .build()
+ *             );
  *     }
  *
  *     // ...
