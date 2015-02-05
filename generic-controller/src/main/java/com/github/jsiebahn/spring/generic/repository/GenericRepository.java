@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * $Id$
+ * Simulates a typical generic repository (or DAO) with a {@code Map}. Internally it supports just
+ * the {@link Person}.
  *
  * @author jsiebahn
  * @since 26.11.14 19:19
@@ -46,7 +47,7 @@ public class GenericRepository {
         if (T.equals(Person.class)) {
             Person p = (Person) entity;
 
-            if (p.getId() <= 0) {
+            if (p.getId() == null || p.getId() <= 0) {
                 int id = 0;
                 for (int existingId : persons.keySet()) {
                     id = Math.max(id, existingId);

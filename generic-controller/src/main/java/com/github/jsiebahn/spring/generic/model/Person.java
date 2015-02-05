@@ -8,17 +8,17 @@ package com.github.jsiebahn.spring.generic.model;
  */
 public class Person {
 
-    private int id;
+    private Integer id;
 
     private String firstName;
 
     private String surName;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

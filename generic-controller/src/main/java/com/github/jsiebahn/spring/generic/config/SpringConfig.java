@@ -1,15 +1,16 @@
 package com.github.jsiebahn.spring.generic.config;
 
-import com.github.jsiebahn.spring.generic.controller.GenericController;
-import com.github.jsiebahn.spring.generic.converter.EntityConverter;
-import com.github.jsiebahn.spring.generic.converter.StringToClassConverter;
+import com.github.jsiebahn.spring.generic.controller.PersonEditor;
+import com.github.jsiebahn.spring.generic.handler.mapping.EntityHandlerMapping;
 import com.github.jsiebahn.spring.generic.repository.GenericRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
  * $Id$
@@ -19,20 +20,39 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {GenericController.class, GenericRepository.class, StringToClassConverter.class})
-public class SpringConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackageClasses = {PersonEditor.class, GenericRepository.class})
+@Import({ConverterConfig.class})
+public class SpringConfig extends WebMvcConfigurationSupport {
 
-    @Autowired
-    private StringToClassConverter stringToClassConverter;
-
-    @Autowired
-    private EntityConverter entityConverter;
-
-
+    @Bean
     @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(entityConverter);
-        registry.addConverter(stringToClassConverter);
+    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+        EntityHandlerMapping handlerMapping = new EntityHandlerMapping();
+
+        // copied from super
+        handlerMapping.setOrder(0);
+        handlerMapping.setInterceptors(getInterceptors());
+        handlerMapping.setContentNegotiationManager(mvcContentNegotiationManager());
+
+        PathMatchConfigurer configurer = getPathMatchConfigurer();
+        if (configurer.isUseSuffixPatternMatch() != null) {
+            handlerMapping.setUseSuffixPatternMatch(configurer.isUseSuffixPatternMatch());
+        }
+        if (configurer.isUseRegisteredSuffixPatternMatch() != null) {
+            handlerMapping.setUseRegisteredSuffixPatternMatch(configurer.isUseRegisteredSuffixPatternMatch());
+        }
+        if (configurer.isUseTrailingSlashMatch() != null) {
+            handlerMapping.setUseTrailingSlashMatch(configurer.isUseTrailingSlashMatch());
+        }
+        if (configurer.getPathMatcher() != null) {
+            handlerMapping.setPathMatcher(configurer.getPathMatcher());
+        }
+        if (configurer.getUrlPathHelper() != null) {
+            handlerMapping.setUrlPathHelper(configurer.getUrlPathHelper());
+        }
+        // end copied from super
+
+        return handlerMapping;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.github.jsiebahn.spring.generic.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.annotation.*;
 
@@ -17,14 +18,21 @@ import java.lang.annotation.*;
  * <dl>
  *     <dt>get all</dt>
  *     <dd>GET /BASE_PATH/com.example.MyEntity</dd>
+ *
  *     <dt>get single entity</dt>
  *     <dd>GET /BASE_PATH/com.example.MyEntity/{id}</dd>
+ *
  *     <dt>create entity</dt>
- *     <dd>PUT /BASE_PATH/com.example.MyEntity</dd>
+ *     <dd>POST /BASE_PATH/com.example.MyEntity</dd>
+ *
  *     <dt>update entity</dt>
- *     <dd>POST /BASE_PATH/com.example.MyEntity/{id}</dd>
+ *     <dd>PUT /BASE_PATH/com.example.MyEntity/{id}</dd>
+ *
  *     <dt>delete entity</dt>
  *     <dd>DELETE /BASE_PATH/com.example.MyEntity/{id}</dd>
+ *
+ *     <dt>get a describing object of how to present an editor for the entity</dt>
+ *     <dd>OPTIONS /BASE_PATH/com.example.MyEntity</dd>
  * </ul>
  * <p>
  * POST, PUT and DELETE methods shall expect the incoming entity data as Json in the
@@ -38,10 +46,11 @@ import java.lang.annotation.*;
  * @author jsiebahn
  * @since 28.11.14 07:32
  */
-@RestController
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Component
+@ResponseBody
 public @interface EntityEditor {
 
     /**
