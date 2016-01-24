@@ -16,6 +16,7 @@
         <module>generic-controller</module>
         <module>lesscss</module>
         <module>caching</module>
+        <module>property-resolver</module>
     </modules>
 
     <build>
