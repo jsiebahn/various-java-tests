@@ -534,7 +534,7 @@ public class PropertyResolver {
         private Properties properties;
 
         public ArgumentPropertiesContext(String[] args) {
-            log.debug("Reading from arguments: {}", args);
+            log.debug("Reading from arguments: {}", (Object) args);
             properties = new Properties();
             for (String arg : args) {
                 if (arg == null || arg.trim().isEmpty()) {
