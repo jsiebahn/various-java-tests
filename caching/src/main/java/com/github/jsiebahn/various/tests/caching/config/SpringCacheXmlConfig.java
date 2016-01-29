@@ -6,6 +6,8 @@ import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,18 +40,18 @@ public class SpringCacheXmlConfig implements CachingConfigurer {
         return manager;
     }
 
-//    @Override // required with spring 4.2.4
-//    public CacheResolver cacheResolver() {
-//        return null; // not required for this simple configuration example
-//    }
+    @Override // required with spring 4.2.4
+    public CacheResolver cacheResolver() {
+        return null; // not required for this simple configuration example
+    }
 
     @Override
     public KeyGenerator keyGenerator() {
         return null; // not required for this simple configuration example
     }
 
-//    @Override // required with spring 4.2.4
-//    public CacheErrorHandler errorHandler() {
-//        return null;  // not required for this simple configuration example
-//    }
+    @Override // required with spring 4.2.4
+    public CacheErrorHandler errorHandler() {
+        return null;  // not required for this simple configuration example
+    }
 }

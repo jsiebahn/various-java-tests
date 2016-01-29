@@ -12,8 +12,8 @@
     <artifactId>caching</artifactId>
 
     <properties>
-        <spring.version>3.2.6.RELEASE</spring.version>
-        <!-- <spring.version>4.1.4.RELEASE</spring.version> -->
+        <!-- not with Java 8 <spring.version>3.2.6.RELEASE</spring.version> -->
+        <spring.version>4.1.4.RELEASE</spring.version>
     </properties>
 
     <dependencies>
