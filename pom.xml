@@ -17,6 +17,7 @@
         <module>lesscss</module>
         <module>caching</module>
         <module>property-resolver</module>
+        <module>nashorn</module>
     </modules>
 
     <build>
