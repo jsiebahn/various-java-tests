@@ -18,6 +18,7 @@
         <module>caching</module>
         <module>property-resolver</module>
         <module>nashorn</module>
+        <module>queue</module>
     </modules>
 
     <build>
