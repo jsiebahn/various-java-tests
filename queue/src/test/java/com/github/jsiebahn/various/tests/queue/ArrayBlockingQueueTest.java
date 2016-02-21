@@ -113,8 +113,7 @@ public class ArrayBlockingQueueTest {
     private void assertOrder(String[] expectedOrder, List<String> actualItems) {
 
         int aIndex = 0;
-        for (int i = 0; i < expectedOrder.length; i++) {
-            String expected = expectedOrder[i];
+        for (String expected : expectedOrder) {
             boolean found = false;
             while (!found && aIndex < actualItems.size()) {
                 if (expected.equals(actualItems.get(aIndex))) {
