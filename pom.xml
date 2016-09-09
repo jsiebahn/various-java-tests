@@ -19,6 +19,7 @@
         <module>property-resolver</module>
         <module>nashorn</module>
         <module>queue</module>
+        <module>cleanup</module>
     </modules>
 
     <build>
