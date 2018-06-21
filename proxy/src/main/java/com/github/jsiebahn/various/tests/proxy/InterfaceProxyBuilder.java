@@ -24,7 +24,9 @@ public class InterfaceProxyBuilder {
 
         Object proxyInstance = Proxy.newProxyInstance(InterfaceProxyBuilder.class.getClassLoader(),
                 new Class[] { interfaceType },
-                new DefaultMethodInvocationHandler(invocationHandler)
+                new DefaultMethodInvocationHandler(
+                        new ObjectMethodInvocationHandler(interfaceType, invocationHandler)
+                )
         );
 
         //noinspection unchecked

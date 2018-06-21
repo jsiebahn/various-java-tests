@@ -107,8 +107,8 @@ public class DefaultMethodInvocationHandler implements InvocationHandler {
             return lookupConstructor;
         }
         catch (NoSuchMethodException e) {
-            throw new RuntimeException(
-                    "Unexpected Api: MethodHandles.Lookup has no expected Constructor", e);
+            throw new IllegalAccessError(
+                    "Unexpected Api: MethodHandles.Lookup has not the expected Constructor");
         }
         catch (SecurityException ignored) {
             // Ignore the SecurityException.
