@@ -11,16 +11,20 @@ import java.lang.reflect.Proxy;
  */
 public class InterfaceProxyBuilder {
 
-    public static <I> I createProxy(Class<I> interfaceType) {
+    /**
+     *
+     * @param interfaceType interface type that should be implemented as proxy
+     * @param invocationHandler the invocation handler that should handle invoked methods that are
+     *      not {@code default} interface implementations and not methods declared in {@link Object}
+     * @param <I> the type of the proxy to implement
+     * @return the interface proxy instance
+     */
+    public static <I> I createProxy(Class<I> interfaceType, InvocationHandler invocationHandler) {
 
-        InvocationHandler invocationHandler = (proxy, method, args) -> {
-            // TODO temporary implementation for the one and only test class
-            if ("getValue".equals(method.getName()) && method.getParameterCount() == 1 && String.class
-                    .equals(method.getParameterTypes()[0])) {
-                return args[0];
-            }
-            return null;
-        };
+        if (!interfaceType.isInterface()) {
+            throw new IllegalArgumentException(
+                    "Only interfaces can be proxied with the " + InterfaceProxyBuilder.class);
+        }
 
         Object proxyInstance = Proxy.newProxyInstance(InterfaceProxyBuilder.class.getClassLoader(),
                 new Class[] { interfaceType },

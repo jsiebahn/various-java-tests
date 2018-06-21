@@ -3,6 +3,8 @@ package com.github.jsiebahn.various.tests.proxy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.InvocationHandler;
+
 import org.junit.Test;
 
 /**
@@ -11,29 +13,38 @@ import org.junit.Test;
  */
 public class ProxyTest {
 
+    private InvocationHandler invocationHandler = (proxy, method, args) -> {
+        if ("getValue".equals(method.getName()) && method.getParameterCount() == 1 && String.class
+                .equals(method.getParameterTypes()[0])) {
+            return "getValue received argument: " + args[0];
+        }
+        return null;
+    };
+
+    private final ToBeProxied proxy = InterfaceProxyBuilder.createProxy(
+            ToBeProxied.class, invocationHandler);
+
     @Test
     public void shouldInvokeRealDefaultMethod() {
 
-        String actual = InterfaceProxyBuilder.createProxy(ToBeProxied.class).getDefaultValue();
+        String actual = proxy.getDefaultValue();
 
-        assertEquals("default", actual);
+        assertEquals("getValue received argument: default", actual);
 
     }
 
     @Test
     public void shouldInvokeProxiedMethod() {
 
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
         String actual = proxy.getValue("passedThroughByProxy");
 
-        assertEquals("passedThroughByProxy", actual);
+        assertEquals("getValue received argument: passedThroughByProxy", actual);
 
     }
 
     @Test
     public void shouldNotFailWhenCallingObjectEquals() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-        ToBeProxied proxy2 = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
+        ToBeProxied proxy2 = InterfaceProxyBuilder.createProxy(ToBeProxied.class, (proxy1, method, args) -> null);
 
         //noinspection SimplifiableJUnitAssertion
         assertTrue(proxy.equals(proxy2));
@@ -41,30 +52,22 @@ public class ProxyTest {
 
     @Test
     public void shouldBeEqualWithItself() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         //noinspection SimplifiableJUnitAssertion,EqualsWithItself
         assertTrue(proxy.equals(proxy));
     }
 
     @Test
     public void shouldNotFailWhenCallingObjectHashCode() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         assertTrue(proxy.hashCode() > 0);
     }
 
     @Test
     public void shouldNotFailWhenCallingObjectToString() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         assertTrue(proxy.toString().contains("ToBeProxied"));
     }
 
     @Test
     public void shouldNotFailWhenCallingObjectNotify() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (proxy) {
             proxy.notify();
@@ -73,8 +76,6 @@ public class ProxyTest {
 
     @Test
     public void shouldNotFailWhenCallingObjectNotifyAll() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (proxy) {
             proxy.notifyAll();
@@ -83,8 +84,6 @@ public class ProxyTest {
 
     @Test
     public void shouldNotFailWhenCallingObjectWait() throws InterruptedException {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         synchronizedDelayInNewThread(proxy);
 
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
@@ -95,8 +94,6 @@ public class ProxyTest {
 
     @Test
     public void shouldNotFailWhenCallingObjectWaitOneParam() throws InterruptedException {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         synchronizedDelayInNewThread(proxy);
 
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
@@ -107,8 +104,6 @@ public class ProxyTest {
 
     @Test
     public void shouldNotFailWhenCallingObjectWaitTwoParams() throws InterruptedException {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         synchronizedDelayInNewThread(proxy);
 
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
@@ -119,21 +114,19 @@ public class ProxyTest {
 
     @Test
     public void shouldConsiderProxyInstanceToBeInstanceOfProxyInterface() {
-        ToBeProxied proxy = InterfaceProxyBuilder.createProxy(ToBeProxied.class);
-
         //noinspection ConstantConditions
         assertTrue(proxy instanceof ToBeProxied);
     }
 
-    private void synchronizedDelayInNewThread(ToBeProxied proxy) {
+    private void synchronizedDelayInNewThread(Object o) {
         new Thread(() -> {
-            synchronized (proxy) {
+            synchronized (o) {
                 try {
                     Thread.sleep(50);
                 }
                 catch (InterruptedException ignored) {
                 }
-                proxy.notifyAll();
+                o.notifyAll();
             }
         }).start();
     }
