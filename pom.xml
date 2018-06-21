@@ -20,6 +20,7 @@
         <module>nashorn</module>
         <module>queue</module>
         <module>cleanup</module>
+        <module>proxy</module>
     </modules>
 
     <build>
