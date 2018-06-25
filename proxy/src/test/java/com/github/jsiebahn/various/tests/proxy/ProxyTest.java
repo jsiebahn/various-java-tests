@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 
+import com.github.jsiebahn.various.tests.proxy.elsewhere.ToBeProxied;
 import org.junit.Test;
 
 /**

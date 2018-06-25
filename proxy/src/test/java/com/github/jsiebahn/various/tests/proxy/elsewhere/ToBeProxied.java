@@ -1,4 +1,4 @@
-package com.github.jsiebahn.various.tests.proxy;
+package com.github.jsiebahn.various.tests.proxy.elsewhere;
 
 /**
  * @author jsiebahn
