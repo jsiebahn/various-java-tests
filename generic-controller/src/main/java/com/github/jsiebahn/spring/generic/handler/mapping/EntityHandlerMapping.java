@@ -97,6 +97,11 @@ public class EntityHandlerMapping extends RequestMappingHandlerMapping {
             }
 
             @Override
+            public String[] path() {
+                return value();
+            }
+
+            @Override
             public RequestMethod[] method() {
                 return null;
             }

@@ -1,5 +1,7 @@
 package com.github.jsiebahn.spring.generic.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * $Id$
  *
@@ -12,6 +14,7 @@ public class Person {
 
     private String firstName;
 
+    @JsonSerialize()
     private String surName;
 
     public Integer getId() {

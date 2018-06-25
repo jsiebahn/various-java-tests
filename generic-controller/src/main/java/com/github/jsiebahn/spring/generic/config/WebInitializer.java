@@ -4,6 +4,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration;
 
 /**
  * $Id$
@@ -11,7 +12,7 @@ import javax.servlet.Filter;
  * @author jsiebahn
  * @since 26.11.14 19:36
  */
-public class WebInitializer  extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -34,5 +35,10 @@ public class WebInitializer  extends AbstractAnnotationConfigDispatcherServletIn
         utf8EncodingFilter.setEncoding("UTF-8");
         utf8EncodingFilter.setForceEncoding(true);
         return new Filter[]{utf8EncodingFilter};
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setInitParameter("dispatchOptionsRequest", "true");
     }
 }

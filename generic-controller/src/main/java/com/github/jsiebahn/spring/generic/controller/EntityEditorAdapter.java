@@ -2,9 +2,13 @@ package com.github.jsiebahn.spring.generic.controller;
 
 import com.github.jsiebahn.spring.generic.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -90,9 +94,32 @@ public abstract class EntityEditorAdapter<T> {
      * @return the {@link #createEditorTemplate()}
      */
     @RequestMapping(method = RequestMethod.OPTIONS)
-    public Object getEditorTemplate() {
-        return createEditorTemplate();
+    public ResponseEntity<Object> getGeneralEditorTemplate() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAllow(EnumSet.of(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS));
+
+        return new ResponseEntity<>(createEditorTemplate(), headers, HttpStatus.OK);
     }
+
+    /**
+     * @return the {@link #createEditorTemplate()}
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Object> getEntityEditorTemplate(@RequestBody T entity) {
+
+        if (entity == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAllow(
+                EnumSet.of(HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.OPTIONS));
+
+        return new ResponseEntity<>(createEditorTemplate(), headers, HttpStatus.OK);
+    }
+
+
 
     /**
      * Builds an editor template instance for any ui that has to display an edit form for the
