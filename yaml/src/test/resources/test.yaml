@@ -1,0 +1,24 @@
+logDir: /etc/check/log/localhost
+stages:
+  - precondition
+  - run
+
+hpvw.no-ip.biz_200:
+  stage : run
+  check : http-status https://hpvw.no-ip.biz 200
+  every : 1m
+
+hpvw.no-ip.biz_rtime:
+  stage : run
+  check : http-time https://hpvw.no-ip.biz 0.3 0.6
+  every : 1m
+
+home-mem:
+  stage : run
+  check : mem-used 95 98
+  every : 1m
+
+home-swap:
+  stage : run
+  check : swap-used 1 5
+  every : 1m
