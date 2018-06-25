@@ -19,7 +19,10 @@
         <module>property-resolver</module>
         <module>nashorn</module>
         <module>queue</module>
+        <module>http-options-spring</module>
         <module>cleanup</module>
+        <module>mongodb</module>
+        <module>yaml</module>
         <module>proxy</module>
     </modules>
 
