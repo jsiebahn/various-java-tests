@@ -20,6 +20,20 @@ import static org.junit.Assert.fail;
 public class MarkdownTest {
 
     @Test
+    @Ignore("Pandoc metadata not working with pegdown.")
+    public void testFindContentAfterPandocMetadata() {
+
+        PegDownProcessor processor = new PegDownProcessor(Extensions.ALL + Extensions.SUPPRESS_ALL_HTML);
+        String actual = processor.markdownToHtml(
+                "%layout post\n"
+                + "%published-on 1 January 2000\n"
+                + "%title Blogging Like a Boss\n"
+                + "\n"
+                + "Content goes here.");
+        assertEquals("<p>Content goes here.</p>", actual);
+    }
+
+    @Test
     public void testFindContentAfterMetadata() {
 
         PegDownProcessor processor = new PegDownProcessor(Extensions.ALL + Extensions.SUPPRESS_ALL_HTML);
