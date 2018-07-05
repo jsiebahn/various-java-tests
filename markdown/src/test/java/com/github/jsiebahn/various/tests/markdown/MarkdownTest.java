@@ -1,6 +1,7 @@
 package com.github.jsiebahn.various.tests.markdown;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
@@ -17,6 +18,34 @@ import static org.junit.Assert.fail;
  * @since 25.09.14 07:09
  */
 public class MarkdownTest {
+
+    @Test
+    public void testFindContentAfterMetadata() {
+
+        PegDownProcessor processor = new PegDownProcessor(Extensions.ALL + Extensions.SUPPRESS_ALL_HTML);
+        String actual = processor.markdownToHtml(
+                "*[layout]: post\n"
+                + "*[published-on]: 1 January 2000\n"
+                + "*[title]: Blogging Like a Boss\n"
+                + "\n"
+                + "Content goes here.");
+        assertEquals("<p>Content goes here.</p>", actual);
+    }
+
+    @Test
+    @Ignore("Yaml metadata not working with pegdown.")
+    public void testFindContentAfterYamlMetadata() {
+
+        PegDownProcessor processor = new PegDownProcessor(Extensions.ALL + Extensions.SUPPRESS_ALL_HTML);
+        String actual = processor.markdownToHtml("---\n"
+                + "layout: post\n"
+                + "published-on: 1 January 2000\n"
+                + "title: Blogging Like a Boss\n"
+                + "---\n"
+                + "\n"
+                + "Content goes here.");
+        assertEquals("<p>Content goes here.</p>", actual);
+    }
 
     @Test
     public void testCreateBlockHtml() {
@@ -40,7 +69,7 @@ public class MarkdownTest {
     private void testAll(PegDownProcessor processor, String... filenames) {
         for (String testFile : filenames) {
             assertEquals("Parsing failed for '" + testFile + "'",
-                    getHtml(testFile), processor.markdownToHtml(getMd(testFile)));
+                    normalize(getHtml(testFile)), normalize(processor.markdownToHtml(getMd(testFile))));
         }
     }
 
@@ -59,5 +88,9 @@ public class MarkdownTest {
             fail("Could not read '" + resourceName + "': " + e.getMessage());
         }
         return "";
+    }
+
+    private String normalize(String s) {
+        return s.replaceAll("(\r\n|\r|\n)", "\n");
     }
 }
