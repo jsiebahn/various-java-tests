@@ -75,6 +75,7 @@ public class MarkdownTest {
                 new Object[] {"Ellipses"},
                 new Object[] {"SimpleLink"},
                 new Object[] {"DefinitionList"},
+                new Object[] {"CodeBlocks"},
                 new Object[] {"Quotes"},
                 new Object[] {"MetadataAbbreviations"},
                 // new Object[] {"MetadataPandoc"}, Seems to be not supported
