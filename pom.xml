@@ -24,6 +24,7 @@
         <module>mongodb</module>
         <module>yaml</module>
         <module>proxy</module>
+      <module>junit5</module>
     </modules>
 
     <build>
