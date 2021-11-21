@@ -25,6 +25,7 @@
         <module>yaml</module>
         <module>proxy</module>
       <module>junit5</module>
+        <module>dropwizard</module>
     </modules>
 
     <build>
